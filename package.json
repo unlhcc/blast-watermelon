@@ -1,8 +1,8 @@
 {
-  "name": "HCCGo BLAST Tutorial",
+  "name": "HCCGo BLAST Exercise",
   "version": "1.0",
-  "description": "Running BLAST Queries using single and multi-node configurations, and running BLAST against a custom database",
-  "tags": ["BLAST", "Beginner"],
+  "description": "Analysis of the nad4L gene from watermelon using BLAST",
+  "tags": ["BLAST"],
   "submits": [
     {
       "runtime": "0:10:00",
