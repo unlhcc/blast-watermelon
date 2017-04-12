@@ -1,0 +1,46 @@
+{
+  "name": "HCCGo BLAST Tutorial",
+  "version": "1.0",
+  "description": "Running BLAST Queries using single and multi-node configurations, and running BLAST against a custom database",
+  "tags": ["BLAST", "Beginner"],
+  "submits": [
+    {
+      "runtime": "0:10:00",
+      "memory": 5000,
+      "jobname": "blast-nt-single",
+      "error": "$WORK/blast-tutorial/blast-nt-single.err",
+      "output": "$WORK/blast-tutorial/blast-nt-single.out",
+      "location": "$WORK/blast-tutorial/blast-nt-single.slurm",
+      "modules": ["blast/2.4", "biodata/1.0"],
+      "commands": "#SBATCH --nodes=1\n#SBATCH --ntasks-per-node=1\n\n# change directory to the correct location\ncd $WORK/blast-tutorial\n\n# copy query and database files to temp folder\ncp $BLAST/nt.00.* /tmp\ncp yeast.nt.fasta /tmp\n\n# run BLAST using query yeast.nt.fasta against entire nucleotide database\nblastn -db /tmp/nt.00 -query /tmp/yeast.nt.fasta -out /tmp/blast_nt_single.alignments\n\n# copy results from temp directory\ncp /tmp/blast_nt_single.alignments ."
+      
+    },
+
+    {
+      "runtime": "0:10:00",
+      "memory": 5000,
+      "jobname": "blast-nt-multi",
+      "error": "$WORK/blast-tutorial/blast-nt-multi.err",
+      "output": "$WORK/blast-tutorial/blast-nt-multi.out",
+      "location": "$WORK/blast-tutorial/blast-nt-multi.slurm",
+      "modules": ["blast/2.4", "biodata/1.0"],
+      "commands": "#SBATCH --nodes=1\n#SBATCH --ntasks-per-node=1\n\n# change directory to the correct location\ncd $WORK/blast-tutorial\n\n# copy query and database files to temp folder\ncp $BLAST/nt.00.* /tmp\ncp yeast.nt.fasta /tmp\n\n# run BLAST using query yeast.nt.fasta against the entire nucleotide database\nblastn -db /tmp/nt.00 -query /tmp/yeast.nt.fasta -out /tmp/blast_nt_multi.alignments -num_threads $SLURM_NTASKS_PER_NODE\n\n# copy results from temp directory\ncp /tmp/blast_nt_multi.alignments ."
+
+    }, 
+
+    {
+      "runtime": "0:10:00",
+      "memory": 5000,
+      "jobname": "blast-aa-multi",
+      "error": "$WORK/blast-tutorial/blast-aa-multi.err",
+      "output": "$WORK/blast-tutorial/blast-aa-multi.out",
+      "location": "$WORK/blast-tutorial/blast-aa-multi.slurm",
+      "modules": ["blast/2.4"],
+      "commands": "#SBATCH --nodes=1\n#SBATCH --ntasks-per-node=1\n\n# change directory to the correct location\ncd $WORK/blast-tutorial\n\n# copy query and database files to temp folder\ncp yeast.aa /tmp\ncp yeast.aa.fasta /tmp\n\n# make BLAST database from yeast.aa file\nmakeblastdb -n /tmp/yeast.aa -dbtype prot -out /tmp/yeast.aa.db\n\n# run BLAST using query yeast.nt.fasta against the created database\nblastn -db /tmp/yeast.aa.db -query /tmp/yeast.aa.fasta -out /tmp/blast_aa_multi.alignments -num_threads $SLURM_NTASKS_PER_NODE\n\n# copy results from temp directory\ncp /tmp/blast_aa_multi.alignments ."
+
+    }
+    
+  ]
+
+
+}
